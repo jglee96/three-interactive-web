@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 window.addEventListener("load", function () {
   init();
@@ -22,6 +23,20 @@ function init() {
     1,
     500
   );
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.autoRotate = true;
+  // controls.autoRotateSpeed = 30;
+  controls.enableDamping = true;
+  // controls.dampingFactor = 0.01;
+  // controls.enableZoom = true;
+  // controls.enablePan = true;
+  // controls.maxDistance = 50;
+  // controls.minDistance = 10;
+  // controls.maxPolarAngle = Math.PI / 2;
+  // controls.minPolarAngle = Math.PI / 3;
+  // controls.maxAzimuthAngle = Math.PI / 2;
+  // controls.minAzimuthAngle = Math.PI / 3;
 
   const cubeGeometry = new THREE.IcosahedronGeometry(1);
   const cubeMaterial = new THREE.MeshLambertMaterial({
@@ -53,15 +68,16 @@ function init() {
   function render() {
     const elapsedTime = clock.getElapsedTime();
 
-    cube.rotation.x = elapsedTime;
-    cube.rotation.y = elapsedTime;
+    // cube.rotation.x = elapsedTime;
+    // cube.rotation.y = elapsedTime;
 
-    skeleton.rotation.x = elapsedTime * 1.5;
-    skeleton.rotation.y = elapsedTime * 1.5;
+    // skeleton.rotation.x = elapsedTime * 1.5;
+    // skeleton.rotation.y = elapsedTime * 1.5;
 
     renderer.render(scene, camera);
 
     requestAnimationFrame(render);
+    controls.update();
   }
 
   function handleResize() {
@@ -70,6 +86,7 @@ function init() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.render(scene, camera);
+    controls.update();
   }
 
   window.addEventListener("resize", handleResize);
