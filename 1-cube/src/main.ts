@@ -23,33 +23,41 @@ function init() {
     500
   );
 
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshStandardMaterial({ color: 0xcc99ff });
+  const cubeGeometry = new THREE.IcosahedronGeometry(1);
+  const cubeMaterial = new THREE.MeshLambertMaterial({
+    color: 0x00ffff,
+    emissive: 0x111111,
+  });
+  const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
+  const skeletonGeometry = new THREE.IcosahedronGeometry(2);
+  const skeletonMaterial = new THREE.MeshBasicMaterial({
+    wireframe: true,
+    transparent: true,
+    opacity: 0.2,
+    color: 0xaaaaaa,
+  });
+  const skeleton = new THREE.Mesh(skeletonGeometry, skeletonMaterial);
 
-  // camera.position.z = 5;
-  camera.position.set(3, 4, 5);
-  camera.lookAt(cube.position);
+  scene.add(cube, skeleton);
 
-  const directionalLight = new THREE.DirectionalLight(0xf0f0f0, 1);
-  directionalLight.position.set(-1, 2, 3);
+  camera.position.z = 5;
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
   scene.add(directionalLight);
-
-  const ambientLight = new THREE.AmbientLight(0xfffff, 0.1);
-  ambientLight.position.set(3, 2, 1);
-  scene.add(ambientLight);
 
   const clock = new THREE.Clock();
 
   render();
 
   function render() {
-    // cube.rotation.x = THREE.MathUtils.degToRad(45);
-    cube.rotation.x += clock.getDelta();
-    // cube.position.y = Math.sin(cube.rotation.x);
-    // cube.scale.x = Math.cos(cube.rotation.x);
+    const elapsedTime = clock.getElapsedTime();
+
+    cube.rotation.x = elapsedTime;
+    cube.rotation.y = elapsedTime;
+
+    skeleton.rotation.x = elapsedTime * 1.5;
+    skeleton.rotation.y = elapsedTime * 1.5;
 
     renderer.render(scene, camera);
 
