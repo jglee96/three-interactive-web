@@ -100,7 +100,7 @@ function init() {
   // gui.add(cube.position, "y", -3, 3, 0.1);
   gui.add(cube.position, "y").min(-3).max(3).step(0.1);
   gui.add(cube, "visible");
-  gui.addColor(options, "color").onChange((value) => {
+  gui.addColor(options, "color").onChange((value: string) => {
     cube.material.color.set(value);
   });
 }
