@@ -1,11 +1,15 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import GUI from "lil-gui";
 
 window.addEventListener("load", function () {
   init();
 });
 
 function init() {
+  const options = {
+    color: 0x00ffff,
+  };
   const renderer = new THREE.WebGLRenderer({
     // alpha: true,
     antialias: true,
@@ -90,4 +94,13 @@ function init() {
   }
 
   window.addEventListener("resize", handleResize);
+
+  const gui = new GUI();
+
+  // gui.add(cube.position, "y", -3, 3, 0.1);
+  gui.add(cube.position, "y").min(-3).max(3).step(0.1);
+  gui.add(cube, "visible");
+  gui.addColor(options, "color").onChange((value) => {
+    cube.material.color.set(value);
+  });
 }
