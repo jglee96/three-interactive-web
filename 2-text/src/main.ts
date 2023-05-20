@@ -54,6 +54,23 @@ async function init() {
   const textMaterial = new THREE.MeshPhongMaterial({ color: 0x00c896 });
 
   const text = new THREE.Mesh(textGeometry, textMaterial);
+
+  // textGeometry.computeBoundingBox();
+  // textGeometry.translate(
+  //   -(
+  //     (textGeometry.boundingBox?.max.x ?? 0) -
+  //     (textGeometry.boundingBox?.min.x ?? 0)
+  //   ) * 0.5,
+  //   -(
+  //     (textGeometry.boundingBox?.max.y ?? 0) -
+  //     (textGeometry.boundingBox?.min.y ?? 0)
+  //   ) * 0.5,
+  //   -(
+  //     (textGeometry.boundingBox?.max.z ?? 0) -
+  //     (textGeometry.boundingBox?.min.z ?? 0)
+  //   ) * 0.5
+  // );
+  textGeometry.center();
   scene.add(text);
 
   /**
