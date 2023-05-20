@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
   init();
 });
 
-function init() {
+async function init() {
   const gui = new GUI();
 
   const renderer = new THREE.WebGLRenderer({
@@ -40,23 +40,21 @@ function init() {
    */
   const fontLoader = new FontLoader();
 
-  fontLoader.load(
-    "./assets/fonts/The Jamsil 3 Regular_Regular.json",
-    (font) => {
-      /**
-       * test
-       */
-      const textGeometry = new TextGeometry("안녕, 친구들.", {
-        font,
-        size: 0.5,
-        height: 0.1,
-      });
-      const textMaterial = new THREE.MeshPhongMaterial({ color: 0x00c896 });
-
-      const text = new THREE.Mesh(textGeometry, textMaterial);
-      scene.add(text);
-    }
+  /**
+   * text
+   */
+  const font = await fontLoader.loadAsync(
+    "./assets/fonts/The Jamsil 3 Regular_Regular.json"
   );
+  const textGeometry = new TextGeometry("안녕, 친구들.", {
+    font,
+    size: 0.5,
+    height: 0.1,
+  });
+  const textMaterial = new THREE.MeshPhongMaterial({ color: 0x00c896 });
+
+  const text = new THREE.Mesh(textGeometry, textMaterial);
+  scene.add(text);
 
   /**
    * light
