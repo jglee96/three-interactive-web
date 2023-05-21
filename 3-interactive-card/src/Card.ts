@@ -14,6 +14,8 @@ class Card {
     const material = new THREE.MeshStandardMaterial({
       color,
       side: THREE.DoubleSide,
+      roughness: 0.5,
+      metalness: 0.5,
     });
 
     const mesh = new THREE.Mesh(geometry, material);
