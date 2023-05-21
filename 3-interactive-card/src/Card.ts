@@ -3,14 +3,27 @@ import * as THREE from "three";
 interface Props {
   width: number;
   height: number;
+  radius: number;
   color: string;
 }
 
 class Card {
   public mesh: THREE.Mesh;
 
-  constructor({ width, height, color }: Props) {
-    const geometry = new THREE.PlaneGeometry(width, height);
+  constructor({ width, height, radius, color }: Props) {
+    const x = width / 2 - radius;
+    const y = height / 2 - radius;
+    const shape = new THREE.Shape();
+
+    shape
+      .absarc(x, y, radius, Math.PI / 2, 0, true)
+      .lineTo(x + radius, -y)
+      .absarc(x, -y, radius, 0, -Math.PI / 2, true)
+      .lineTo(-x, -(y + radius))
+      .absarc(-x, -y, radius, -Math.PI / 2, Math.PI, true)
+      .lineTo(-(x + radius), y)
+      .absarc(-x, y, radius, Math.PI, Math.PI / 2, true);
+    const geometry = new THREE.ShapeGeometry(shape);
     const material = new THREE.MeshStandardMaterial({
       color,
       side: THREE.DoubleSide,
