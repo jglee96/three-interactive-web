@@ -2,6 +2,9 @@ import * as THREE from "three";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import GUI from "lil-gui";
 
 window.addEventListener("load", function () {
@@ -159,10 +162,40 @@ async function init() {
     .step(0.01)
     .name("shadow.raduis");
 
+  /**effects */
+  const composer = new EffectComposer(renderer);
+
+  const renderPass = new RenderPass(scene, camera);
+  composer.addPass(renderPass);
+
+  const unrealBloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.2,
+    1,
+    0
+  );
+  composer.addPass(unrealBloomPass);
+
+  const unrealbloomPassFolder = gui.addFolder("UnrealBloomPass");
+
+  unrealbloomPassFolder
+    .add(unrealBloomPass, "strength")
+    .min(0)
+    .max(3)
+    .step(0.01);
+
+  unrealbloomPassFolder.add(unrealBloomPass, "radius").min(0).max(1).step(0.01);
+
+  unrealbloomPassFolder
+    .add(unrealBloomPass, "threshold")
+    .min(0)
+    .max(1)
+    .step(0.01);
+
   render();
 
   function render() {
-    renderer.render(scene, camera);
+    composer.render();
 
     requestAnimationFrame(render);
   }
