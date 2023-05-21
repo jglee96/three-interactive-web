@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import Card from "./Card";
 
 window.addEventListener("load", function () {
@@ -13,7 +14,7 @@ function init() {
 
   // renderer.setClearAlpha(1);
   // renderer.setClearColor(0x00aaff, 0.5);
-  // renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
   document.body.appendChild(renderer.domElement);
 
@@ -33,6 +34,8 @@ function init() {
   );
 
   camera.position.z = 25;
+
+  const control = new OrbitControls(camera, renderer.domElement);
 
   const card = new Card({
     width: 10,
