@@ -15,6 +15,8 @@ async function init() {
     antialias: true,
   });
 
+  renderer.shadowMap.enabled = true;
+
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   document.body.appendChild(renderer.domElement);
@@ -58,6 +60,7 @@ async function init() {
   const textMaterial = new THREE.MeshPhongMaterial();
 
   const text = new THREE.Mesh(textGeometry, textMaterial);
+  text.castShadow = true;
 
   // textGeometry.computeBoundingBox();
   // textGeometry.translate(
@@ -91,6 +94,7 @@ async function init() {
   const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 
   plane.position.z = -10;
+  plane.receiveShadow = true;
   scene.add(plane);
 
   /**
@@ -107,6 +111,12 @@ async function init() {
     0.2,
     0.5
   );
+
+  spotLight.castShadow = true;
+  spotLight.shadow.mapSize.width = 1024;
+  spotLight.shadow.mapSize.height = 1024;
+  spotLight.shadow.radius = 10;
+
   spotLight.position.set(0, 0, 3);
   spotLight.target.position.set(0, 0, -3);
   scene.add(spotLight, spotLight.target);
@@ -135,6 +145,12 @@ async function init() {
   spotLightFolder.add(spotLight, "distance").min(1).max(30).step(0.01);
   spotLightFolder.add(spotLight, "decay").min(0).max(10).step(0.01);
   spotLightFolder.add(spotLight, "penumbra").min(0).max(1).step(0.01);
+  spotLightFolder
+    .add(spotLight.shadow, "radius")
+    .min(1)
+    .max(20)
+    .step(0.01)
+    .name("shadow.raduis");
 
   render();
 
