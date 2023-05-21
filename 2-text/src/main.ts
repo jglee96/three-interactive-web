@@ -111,8 +111,12 @@ async function init() {
   spotLight.target.position.set(0, 0, -3);
   scene.add(spotLight, spotLight.target);
 
-  const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-  scene.add(spotLightHelper);
+  window.addEventListener("mousemove", (e) => {
+    const x = e.clientX / window.innerWidth - 0.5;
+    const y = -(e.clientY / window.innerHeight - 0.5);
+
+    spotLight.target.position.set(x * 5, y * 5, -3);
+  });
 
   const spotLightFolder = gui.addFolder("SpotLight");
   spotLightFolder
@@ -136,7 +140,6 @@ async function init() {
 
   function render() {
     renderer.render(scene, camera);
-    spotLightHelper.update();
 
     requestAnimationFrame(render);
   }
