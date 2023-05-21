@@ -119,6 +119,13 @@ async function init() {
 
   spotLight.position.set(0, 0, 3);
   spotLight.target.position.set(0, 0, -3);
+
+  const spotLightTexture = textureLoader.load("gradient.jpg");
+  spotLightTexture.encoding = THREE.sRGBEncoding;
+  THREE.LinearEncoding;
+
+  spotLight.map = spotLightTexture;
+
   scene.add(spotLight, spotLight.target);
 
   window.addEventListener("mousemove", (e) => {
