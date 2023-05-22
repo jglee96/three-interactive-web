@@ -16,6 +16,8 @@ async function init() {
     canvas: canvas!,
   });
 
+  renderer.shadowMap.enabled = true;
+
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
@@ -40,6 +42,7 @@ async function init() {
   });
 
   const wave = new THREE.Mesh(waveGeometry, waveMaterial);
+  wave.receiveShadow = true;
 
   wave.rotation.x = -Math.PI / 2;
 
@@ -71,6 +74,14 @@ async function init() {
   const gltf = await gltfLoader.loadAsync("./models/ship/scene.gltf");
 
   const ship = gltf.scene;
+  ship.castShadow = true;
+
+  ship.traverse((object) => {
+    if (object.type === "Mesh") {
+      object.castShadow = true;
+    }
+  });
+
   ship.rotation.y = Math.PI;
   ship.scale.set(40, 40, 40);
 
@@ -83,12 +94,20 @@ async function init() {
   scene.add(ship);
 
   const pointLight = new THREE.PointLight(0xffffff, 1);
+  pointLight.castShadow = true;
+  pointLight.shadow.mapSize.width = 1024;
+  pointLight.shadow.mapSize.height = 1024;
+  pointLight.shadow.radius = 10;
 
   pointLight.position.set(15, 15, 15);
 
   scene.add(pointLight);
 
   const directionLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionLight.castShadow = true;
+  directionLight.shadow.mapSize.width = 1024;
+  directionLight.shadow.mapSize.height = 1024;
+  directionLight.shadow.radius = 10;
 
   directionLight.position.set(-15, 15, 15);
 
