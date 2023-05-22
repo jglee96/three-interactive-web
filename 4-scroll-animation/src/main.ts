@@ -13,9 +13,13 @@ async function init() {
 
   const params = {
     waveColor: "#00ffff",
+    backgroundColor: "#ffffff",
+    fogColor: "#f0f0f0",
   };
 
   const gui = new GUI();
+  gui.hide();
+
   const canvas = document.querySelector("#canvas");
 
   const renderer = new THREE.WebGLRenderer({
@@ -145,10 +149,40 @@ async function init() {
 
   window.addEventListener("resize", handleResize);
 
-  gsap.to(params, {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".wrapper",
+      start: "top top",
+      markers: true,
+      scrub: true,
+    },
+  });
+
+  tl.to(params, {
     waveColor: "#4268ff",
     onUpdate: () => {
       waveMaterial.color = new THREE.Color(params.waveColor);
     },
-  });
+  })
+    .to(
+      params,
+      {
+        backgroundColor: "#2a2a2a",
+        onUpdate: () => {
+          scene.background = new THREE.Color(params.backgroundColor);
+        },
+      },
+      "<"
+    )
+    .to(
+      params,
+      {
+        fogColor: "#2f2f2f",
+        onUpdate: () => {
+          const fog = scene.fog;
+          if (fog) fog.color = new THREE.Color(params.fogColor);
+        },
+      },
+      "<"
+    );
 }
