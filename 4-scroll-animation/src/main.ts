@@ -28,13 +28,20 @@ function init() {
 
   const waveGeometry = new THREE.PlaneGeometry(1500, 1500, 150, 150);
   const waveMaterial = new THREE.MeshStandardMaterial({
-    wireframe: true,
     color: "#00ffff",
   });
 
   const wave = new THREE.Mesh(waveGeometry, waveMaterial);
 
   wave.rotation.x = -Math.PI / 2;
+
+  const wavePositionAttr = waveGeometry.getAttribute("position");
+  const waveHeight = 2.5;
+
+  for (let i = 0; i < wavePositionAttr.count; i++) {
+    const z = wavePositionAttr.getZ(i) + (Math.random() - 0.5) * waveHeight;
+    wavePositionAttr.setZ(i, z);
+  }
 
   scene.add(wave);
 
