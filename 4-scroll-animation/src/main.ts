@@ -1,12 +1,20 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { GUI } from "lil-gui";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 window.addEventListener("load", function () {
   init();
 });
 
 async function init() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  const params = {
+    waveColor: "#00ffff",
+  };
+
   const gui = new GUI();
   const canvas = document.querySelector("#canvas");
 
@@ -38,7 +46,7 @@ async function init() {
 
   const waveGeometry = new THREE.PlaneGeometry(1500, 1500, 150, 150);
   const waveMaterial = new THREE.MeshStandardMaterial({
-    color: "#00ffff",
+    color: params.waveColor,
   });
 
   const wave = new THREE.Mesh(waveGeometry, waveMaterial);
@@ -136,4 +144,11 @@ async function init() {
   }
 
   window.addEventListener("resize", handleResize);
+
+  gsap.to(params, {
+    waveColor: "#4268ff",
+    onUpdate: () => {
+      waveMaterial.color = new THREE.Color(params.waveColor);
+    },
+  });
 }
