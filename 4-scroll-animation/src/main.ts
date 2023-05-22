@@ -44,17 +44,20 @@ function init() {
 
   const wavePositionAttr = waveGeometry.getAttribute("position");
   const waveHeight = 2.5;
+  const initialZPositions: number[] = [];
 
   for (let i = 0; i < wavePositionAttr.count; i++) {
     const z = wavePositionAttr.getZ(i) + (Math.random() - 0.5) * waveHeight;
     wavePositionAttr.setZ(i, z);
+    initialZPositions.push(z);
   }
 
   const waveUpdate = () => {
     const elapsedTime = clock.getElapsedTime();
 
     for (let i = 0; i < wavePositionAttr.count; i++) {
-      const z = wavePositionAttr.getZ(i) + elapsedTime * 0.01;
+      const z =
+        initialZPositions[i] + Math.sin(elapsedTime * 3 + i ** 2) * waveHeight;
       wavePositionAttr.setZ(i, z);
     }
 
