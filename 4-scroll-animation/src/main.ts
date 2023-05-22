@@ -50,6 +50,17 @@ function init() {
     wavePositionAttr.setZ(i, z);
   }
 
+  const waveUpdate = () => {
+    const elapsedTime = clock.getElapsedTime();
+
+    for (let i = 0; i < wavePositionAttr.count; i++) {
+      const z = wavePositionAttr.getZ(i) + elapsedTime * 0.01;
+      wavePositionAttr.setZ(i, z);
+    }
+
+    wavePositionAttr.needsUpdate = true;
+  };
+
   scene.add(wave);
 
   const pointLight = new THREE.PointLight(0xffffff, 1);
@@ -63,10 +74,13 @@ function init() {
   directionLight.position.set(-15, 15, 15);
 
   scene.add(directionLight);
+  const clock = new THREE.Clock();
 
   render();
 
   function render() {
+    waveUpdate();
+
     renderer.render(scene, camera);
 
     requestAnimationFrame(render);
