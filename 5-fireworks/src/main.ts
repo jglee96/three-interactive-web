@@ -29,7 +29,7 @@ function init() {
 
   const geometry = new THREE.BufferGeometry();
 
-  const count = 10000;
+  const count = 1000;
 
   const positions = new Float32Array(count * 3);
 
@@ -43,8 +43,15 @@ function init() {
 
   const material = new THREE.PointsMaterial({
     color: 0xccaaff,
-    size: 0.01,
+    size: 1,
   });
+
+  const textureLoader = new THREE.TextureLoader();
+
+  const texture = textureLoader.load("./assets/textures/particle.png");
+  material.alphaMap = texture;
+  material.transparent = true;
+  material.depthWrite = false;
 
   const points = new THREE.Points(geometry, material);
 
