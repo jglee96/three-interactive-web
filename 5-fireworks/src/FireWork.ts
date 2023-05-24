@@ -31,6 +31,7 @@ class FireWork {
       alphaMap: texture,
       transparent: true,
       depthWrite: false,
+      color: new THREE.Color(Math.random(), Math.random(), Math.random()),
     });
 
     const points = new THREE.Points(particlesGeometry, particlesMaterial);
