@@ -25,14 +25,21 @@ function init() {
 
   camera.position.z = 8000;
 
+  const fireWorks: FireWork[] = [];
+
+  const fireWorksUpdate = () => {
+    fireWorks.forEach((item) => item.update());
+  };
+
   const fireWork = new FireWork({ x: 0, y: 0 });
 
   scene.add(fireWork.points);
+  fireWorks.push(fireWork);
 
   render();
 
   function render() {
-    fireWork.update();
+    fireWorksUpdate();
 
     renderer.render(scene, camera);
 
@@ -48,4 +55,17 @@ function init() {
   }
 
   window.addEventListener("resize", handleResize);
+
+  function handleMouseDown() {
+    const fireWork = new FireWork({
+      x: THREE.MathUtils.randFloatSpread(8000),
+      y: THREE.MathUtils.randFloatSpread(8000),
+    });
+
+    scene.add(fireWork.points);
+
+    fireWorks.push(fireWork);
+  }
+
+  window.addEventListener("mousedown", handleMouseDown);
 }
