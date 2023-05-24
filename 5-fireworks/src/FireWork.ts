@@ -11,7 +11,7 @@ class FireWork {
   deltas: THREE.Vector3[];
 
   constructor({ x, y }: Props) {
-    const count = 1000;
+    const count = 1000 + Math.round(Math.random() + 5000);
     const velocity = 10 + Math.random() * 10;
 
     const particlesGeometry = new THREE.BufferGeometry();
@@ -23,10 +23,13 @@ class FireWork {
       const particle = new THREE.Vector3(x, y, 0);
       this.particles.push(particle);
 
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.random() * Math.PI * 2;
+
       const delta = new THREE.Vector3(
-        THREE.MathUtils.randFloatSpread(velocity),
-        THREE.MathUtils.randFloatSpread(velocity),
-        THREE.MathUtils.randFloatSpread(velocity)
+        velocity * Math.sin(theta) * Math.cos(phi),
+        velocity * Math.sin(theta) * Math.sin(phi),
+        velocity * Math.cos(theta)
       );
       this.deltas.push(delta);
     }
@@ -42,6 +45,7 @@ class FireWork {
       transparent: true,
       depthWrite: false,
       color: new THREE.Color(Math.random(), Math.random(), Math.random()),
+      blending: THREE.AdditiveBlending,
     });
 
     const points = new THREE.Points(particlesGeometry, particlesMaterial);
