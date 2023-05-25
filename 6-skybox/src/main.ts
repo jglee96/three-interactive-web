@@ -25,12 +25,42 @@ function init() {
 
   camera.position.z = 5;
 
+  /** 큐브맵 텍스처를 이용한 3차원 공간 표현 1 */
+  // const controls = new OrbitControls(camera, renderer.domElement);
+
+  // controls.minDistance = 5;
+  // controls.maxDistance = 100;
+
+  // const textureLoader = new THREE.TextureLoader().setPath(
+  //   "assets/textures/Yokohama/"
+  // );
+
+  // const images = [
+  //   "posx.jpg",
+  //   "negx.jpg",
+  //   "posy.jpg",
+  //   "negy.jpg",
+  //   "posz.jpg",
+  //   "negz.jpg",
+  // ];
+
+  // const geometry = new THREE.BoxGeometry(5000, 5000, 5000);
+  // const materials = images.map(
+  //   (image) =>
+  //     new THREE.MeshBasicMaterial({
+  //       map: textureLoader.load(image),
+  //       side: THREE.BackSide,
+  //     })
+  // );
+
+  // const skybox = new THREE.Mesh(geometry, materials);
+
+  // scene.add(skybox);
+
+  /** 큐브맵 텍스처를 이용한 3차원 공간 표현 2 */
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  controls.minDistance = 5;
-  controls.maxDistance = 100;
-
-  const textureLoader = new THREE.TextureLoader().setPath(
+  const cubeTextureLoader = new THREE.CubeTextureLoader().setPath(
     "assets/textures/Yokohama/"
   );
 
@@ -43,18 +73,9 @@ function init() {
     "negz.jpg",
   ];
 
-  const geometry = new THREE.BoxGeometry(5000, 5000, 5000);
-  const materials = images.map(
-    (image) =>
-      new THREE.MeshBasicMaterial({
-        map: textureLoader.load(image),
-        side: THREE.BackSide,
-      })
-  );
+  const cubeTexture = cubeTextureLoader.load(images);
 
-  const skybox = new THREE.Mesh(geometry, materials);
-
-  scene.add(skybox);
+  scene.background = cubeTexture;
 
   render();
 
