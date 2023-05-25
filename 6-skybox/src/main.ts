@@ -58,28 +58,46 @@ function init() {
   // scene.add(skybox);
 
   /** 큐브맵 텍스처를 이용한 3차원 공간 표현 2 */
+  // new OrbitControls(camera, renderer.domElement);
+
+  // const cubeTextureLoader = new THREE.CubeTextureLoader().setPath(
+  //   "assets/textures/Yokohama/"
+  // );
+
+  // const images = [
+  //   "posx.jpg",
+  //   "negx.jpg",
+  //   "posy.jpg",
+  //   "negy.jpg",
+  //   "posz.jpg",
+  //   "negz.jpg",
+  // ];
+
+  // const cubeTexture = cubeTextureLoader.load(images);
+
+  // scene.background = cubeTexture;
+
+  /** 360 파노라마 텍스처를 이용한 3차원 공간 표현 */
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  const cubeTextureLoader = new THREE.CubeTextureLoader().setPath(
-    "assets/textures/Yokohama/"
-  );
+  controls.enableZoom = false;
+  controls.enableDamping = true;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.5;
 
-  const images = [
-    "posx.jpg",
-    "negx.jpg",
-    "posy.jpg",
-    "negy.jpg",
-    "posz.jpg",
-    "negz.jpg",
-  ];
+  const textureLoader = new THREE.TextureLoader();
 
-  const cubeTexture = cubeTextureLoader.load(images);
+  const texture = textureLoader.load("assets/textures/landscape.jpg");
 
-  scene.background = cubeTexture;
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+
+  scene.background = texture;
 
   render();
 
   function render() {
+    controls.update();
+
     renderer.render(scene, camera);
 
     requestAnimationFrame(render);
