@@ -91,7 +91,7 @@ async function init() {
 
   const spotLight = new THREE.SpotLight(
     0xffffff,
-    1.5,
+    5,
     30,
     Math.PI * 0.15,
     0.5,
@@ -107,9 +107,24 @@ async function init() {
 
   scene.add(spotLight);
 
+  const mixer = new THREE.AnimationMixer(model);
+  const hasAnimation = gltf.animations.length !== 0;
+
+  if (hasAnimation) {
+    const action = mixer.clipAction(gltf.animations[0]);
+
+    action.play();
+  }
+
+  const clock = new THREE.Clock();
+
   render();
 
   function render() {
+    const delta = clock.getDelta();
+
+    mixer.update(delta);
+
     controls.update();
 
     renderer.render(scene, camera);
