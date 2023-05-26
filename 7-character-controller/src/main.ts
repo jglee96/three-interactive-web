@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 window.addEventListener("load", function () {
   init();
@@ -26,6 +27,14 @@ async function init() {
   );
 
   camera.position.set(0, 5, 20);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+
+  controls.enableDamping = true;
+  controls.minDistance = 15;
+  controls.maxDistance = 25;
+  controls.minPolarAngle = Math.PI / 4;
+  controls.maxPolarAngle = Math.PI / 3;
 
   const progressBar = document.getElementById("progress-bar");
   const progressBarContainer = document.getElementById(
@@ -63,6 +72,8 @@ async function init() {
   render();
 
   function render() {
+    controls.update();
+
     renderer.render(scene, camera);
 
     requestAnimationFrame(render);
