@@ -11,7 +11,8 @@ async function init() {
     antialias: true,
   });
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.shadowMap.enabled = true;
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -59,15 +60,52 @@ async function init() {
 
   model.scale.set(0.1, 0.1, 0.1);
 
+  model.traverse((object) => {
+    if (object.type === "Mesh") {
+      object.castShadow = true;
+    }
+  });
+
   scene.add(model);
 
   camera.lookAt(model.position);
+
+  const planeGeometry = new THREE.PlaneGeometry(10000, 10000, 10000);
+  const planeMaterial = new THREE.MeshPhongMaterial({
+    color: 0x000000,
+  });
+
+  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+  plane.rotation.x = -Math.PI / 2;
+  plane.position.y = -7.5;
+  plane.receiveShadow = true;
+
+  scene.add(plane);
 
   const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x333333);
 
   hemisphereLight.position.set(0, 20, 10);
 
   scene.add(hemisphereLight);
+
+  const spotLight = new THREE.SpotLight(
+    0xffffff,
+    1.5,
+    30,
+    Math.PI * 0.15,
+    0.5,
+    0.5
+  );
+
+  spotLight.position.set(0, 20, 0);
+
+  spotLight.castShadow = true;
+  spotLight.shadow.mapSize.width = 1024;
+  spotLight.shadow.mapSize.height = 1024;
+  spotLight.shadow.radius = 8;
+
+  scene.add(spotLight);
 
   render();
 
