@@ -108,12 +108,35 @@ async function init() {
   scene.add(spotLight);
 
   const mixer = new THREE.AnimationMixer(model);
+
+  const buttons = document.querySelector(".actions");
+
+  let currentAction: THREE.AnimationAction;
+
+  const combatAnimations = gltf.animations.slice(0, 5);
+
+  combatAnimations.forEach((animation) => {
+    const button = document.createElement("button");
+
+    button.innerText = animation.name;
+    buttons?.appendChild(button);
+    button.addEventListener("click", () => {
+      const prevAction = currentAction;
+
+      currentAction = mixer.clipAction(animation);
+
+      if (prevAction !== currentAction) {
+        prevAction.fadeOut(0.5);
+        currentAction.reset().fadeIn(0.5).play();
+      }
+    });
+  });
   const hasAnimation = gltf.animations.length !== 0;
 
   if (hasAnimation) {
-    const action = mixer.clipAction(gltf.animations[0]);
+    currentAction = mixer.clipAction(gltf.animations[0]);
 
-    action.play();
+    currentAction.play();
   }
 
   const clock = new THREE.Clock();
